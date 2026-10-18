@@ -16,7 +16,7 @@
   "cloudflare": {
     "bindings": {
       "DB": {
-        "description": "계정 프로필·암호화된 연결·90일 감사 기록"
+        "description": "Account profiles, encrypted connections, and 90-day issuance audit records."
       }
     }
   },
@@ -34,5 +34,11 @@
   },
   "engines": {
     "node": ">=24"
+  },
+  "description": "A self-hosted Tailscale auth key desk on Cloudflare.",
+  "homepage": "https://github.com/ajchemist/keyport",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ajchemist/keyport.git"
   }
 }
