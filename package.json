@@ -17,7 +17,7 @@
   "cloudflare": {
     "bindings": {
       "DB": {
-        "description": "Account profiles, encrypted connections, and 90-day issuance audit records."
+        "description": "Account profiles, encrypted connections, and 90-day audit records. The keyport build token needs Account D1 Edit permission to apply migrations."
       }
     }
   },

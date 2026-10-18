@@ -8,23 +8,42 @@ A self-hosted Tailscale auth key desk on Cloudflare. Select an account and tailn
 
 ## Install in your browser
 
-**Before deploying, enable Protect with Cloudflare Access and select All traffic.** Protect production and previews from the start. Use the Cloudflare account policy only if all members of that account are trusted administrators; otherwise choose an appropriately restricted policy. Never use Everyone or Bypass. The repository cannot enforce the dashboard checkbox through a documented template setting.
+Click **Deploy to Cloudflare**, connect your own GitHub and Cloudflare accounts, and review the new repository, Worker, and D1 names. Before clicking **Deploy**, use these settings:
 
-1. Click the button and connect **your own GitHub and Cloudflare accounts**. Review the names of the repository, Worker, and D1 database being created.
-2. Set the build command to `bun run build` and the deploy command to `bun run deploy`. The repository uses `bun.lock` and declares Bun 1.4.2 in `packageManager`. D1 is provisioned and bound automatically; you do not need to copy database IDs. The deploy command also applies migrations.
-3. Open the deployed Worker URL, sign in through Access, and launch the **setup wizard**. No local CLI is needed.
-4. Confirm Worker-wide Access protection and restrict the existing Access application to your actual administrator emails. Reuse its AUD tag instead of creating a duplicate application. Generate an encryption key in your browser and secure the recovery file.
-5. Save the five values prepared by the wizard as **Secrets** under Worker **Settings → Variables and Secrets**, then deploy. Sign in through Access to open the app.
+| Deployment setting | Value |
+| --- | --- |
+| Build command | `bun run build` |
+| Deploy command | `bun run deploy` |
+| Preview command | `bunx wrangler preview` |
+| Protect with Cloudflare Access | **On** |
+| Access traffic | **All traffic** |
+| Access policy | Only trusted administrators. Choose **Cloudflare account** only if every account member is trusted. |
+| Advanced settings → API token | **Create new token** |
+| New API token name | **`keyport`** |
+| Build variable, if pinning Bun | `BUN_VERSION=1.4.2` |
+| Preview builds for the first installation | **Off**, until separate test resources and authentication are configured. |
 
-Set the Preview command to `bunx wrangler preview` (or `bun run preview` with the latest source). Cloudflare may still display its own default, `npx wrangler preview`; repository scripts do not overwrite that dashboard field. Worker Previews are separate from `wrangler versions upload`. The empty `previews` block exposes setup instructions only: management remains blocked until separate test D1 bindings, Secrets, and Access are configured. Do not use production credentials for previews. [Preview configuration](https://developers.cloudflare.com/workers/previews/configuration/)
+Cloudflare controls these dashboard fields. Repository scripts do not overwrite saved selections or force Access protection, token creation, or the token name. Review the table even if the screen preselects different values. Never use Everyone or Bypass for Access.
 
-The button automates repository cloning, Workers Builds integration, D1 provisioning and binding, migrations, and deployment. **You complete Access policies and Secret configuration in the wizard.** The app does not store a Cloudflare account management token. End-to-end installation in a fresh Cloudflare account remains unverified. [Official deployment guide](https://developers.cloudflare.com/workers/platform/deploy-buttons/)
+**The `keyport` API token is for Cloudflare Builds, not Tailscale.** Let Cloudflare create and manage it for deployment; do not paste it into Git, the app, D1, or a Worker Secret. The deploy script applies D1 migrations, so confirm that the build token permits **Account → D1 → Edit** on the target account. Cloudflare's documented generic token permissions do not list D1: do not assume a newly generated token includes it. If a migration reports an authorization error, edit the generated `keyport` token under **My Profile → API Tokens**, add D1 edit permission on the target account, and retry the build. Do not substitute a Global API Key. [Build token documentation](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/)
 
-If you started setup before switching to Bun, refresh the commands above and ensure your cloned repository contains the latest source. Existing clones do not automatically receive upstream changes.
+Once deployment succeeds:
 
-**Does the button require Git?** Yes. The official flow connects your GitHub/GitLab account, creates a copy of the source repository in your account, and connects it to Workers Builds. You do not need to create a repository beforehand. Manual deployment with Wrangler is a separate option that does not require a Git integration.
+1. Open the Worker URL and sign in through Access to launch the **setup wizard**. No local CLI is needed.
+2. Confirm Worker-wide Access protection and restrict the existing Access application to the actual administrator emails. Reuse its AUD tag instead of creating a duplicate application.
+3. Generate an encryption key in your browser and secure the recovery file.
+4. Save the five values prepared by the wizard as **Secrets** under Worker **Settings → Variables and Secrets**, then deploy those settings.
+5. Open the app, add an account profile, and register a tailnet with its **Tailscale personal API token**. Tailscale tokens are encrypted in D1 and never shown again.
 
-With Access enabled at deployment, even the setup wizard requires login. If Access is omitted, only setup instructions can be public before configuration. The management UI and APIs remain blocked until configuration is complete. Afterward, setup instructions also require authentication. The first visitor never becomes an administrator automatically.
+D1 is provisioned and bound automatically; no database ID copying is required. The button automates repository cloning, Workers Builds integration, resource provisioning, and deployment. Access policies, dashboard selections, token permissions when needed, and application Secrets remain explicit setup steps. End-to-end installation in a fresh Cloudflare account is not yet verified. [Official deployment guide](https://developers.cloudflare.com/workers/platform/deploy-buttons/)
+
+Worker Previews use `bunx wrangler preview` (`bun run preview` is an alias in the current source), not `wrangler versions upload`. They do not inherit production settings. The empty `previews` block provides setup instructions only: configure separate test D1 bindings, Secrets, and Access before enabling management in a Preview. [Preview configuration](https://developers.cloudflare.com/workers/previews/configuration/)
+
+If an earlier attempt already created a cloned repository, synchronize the latest source before restarting. Upstream updates do not automatically reach existing clones. Do not delete an existing Worker, database, or credentials just to restart the installation.
+
+**Does the button require Git?** Yes. The official flow connects GitHub/GitLab, creates a copy of the source in your account, and connects it to Workers Builds. You do not need to create a repository beforehand. Manual Wrangler deployment is a separate option without Git integration.
+
+With Access enabled at deployment, even setup requires login. If omitted, only setup instructions can be public; the management UI and APIs remain blocked until configuration is complete. The first visitor never becomes an administrator automatically.
 
 ## Use
 

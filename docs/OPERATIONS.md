@@ -17,7 +17,9 @@
 
 Worker 전체의 Access 보호가 기본입니다. 계정 전체의 보호 정책은 다른 Worker에 영향을 줄 수 있으므로 이 앱의 Worker만 선택합니다. 사용자·도메인을 추정하지 말고 실제 관리자 이메일만 허용하세요. `Everyone`·`Bypass` 정책은 사용하지 않습니다. 다른 도메인과 프리뷰에서는 APP_ORIGIN 검사도 차단합니다. 커스텀 도메인을 추가하면 APP_ORIGIN을 변경하고 새 URL로 앱을 다시 설치합니다.
 
-Cloudflare 관리 API 토큰은 런타임에 저장하지 않습니다. 설치용 별도 Cloudflare API 토큰도 요구하지 않으며, 대시보드 로그인과 Workers Builds의 계정 권한을 이용합니다. GitHub/Cloudflare 연결 앱의 접근 범위는 설치 화면에서 검토하세요.
+**Advanced settings → API token → Create new token**, 이름 **`keyport`**를 기본 설치 선택으로 사용합니다. 이 Cloudflare 배포 토큰은 Workers Builds가 관리하며 Git·D1·앱·Worker Secret에 저장하지 않습니다. Tailscale 사용자 토큰과는 별개입니다. 배포 시 D1 마이그레이션을 실행하므로 대상 계정의 D1 편집 권한이 필요합니다. 자동 생성 토큰의 권한 목록을 확인하고, 마이그레이션 인증 오류가 나면 My Profile → API Tokens에서 `keyport` 토큰에 대상 계정의 D1 편집 권한을 추가한 뒤 빌드를 재시도합니다. [Workers Builds 토큰](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/)
+
+Cloudflare 관리 API 토큰은 런타임에 저장하지 않습니다. GitHub/Cloudflare 연결 앱의 접근 범위는 설치 화면에서 검토하세요.
 
 ## 배포와 업데이트
 
@@ -80,4 +82,4 @@ bun -e 'import{randomBytes}from"node:crypto";import{writeFileSync}from"node:fs";
 
 연결/프로필 삭제는 로컬 자격 증명만 제거하며, 이미 발급된 키·등록된 기기는 남습니다. Tailscale 콘솔에서 불필요한 auth key·API 토큰·기기를 각각 폐기/삭제하세요.
 
-전체 제거는 백업 필요 여부를 결정하고 Tailscale 자원을 정리한 뒤, Cloudflare의 해당 Worker·D1·전용 Access 앱·불필요한 도메인 라우트를 삭제합니다. 공유 Access 정책·IdP와 다른 Worker를 삭제하지 마세요. Workers Builds의 GitHub 연결과 복제 저장소는 필요에 따라 별도 정리합니다. 로컬·다운로드·백업 보관함의 자격 증명도 보관 정책에 따라 정리합니다.
+전체 제거는 백업 필요 여부를 결정하고 Tailscale 자원을 정리한 뒤, Cloudflare의 해당 Worker·D1·전용 Access 앱·불필요한 도메인 라우트를 삭제합니다. 공유 Access 정책·IdP와 다른 Worker를 삭제하지 마세요. Workers Builds의 GitHub 연결과 복제 저장소는 필요에 따라 별도 정리합니다. 이 배포에 사용한 keyport 빌드 토큰이 더 이상 필요하지 않고 다른 배포에서 사용하지 않는지 확인한 뒤 My Profile → API Tokens에서 별도로 폐기합니다. 로컬·다운로드·백업 보관함의 자격 증명도 보관 정책에 따라 정리합니다.
