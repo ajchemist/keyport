@@ -7,7 +7,7 @@
 ## 브라우저에서 설치
 
 1. 위 버튼을 누르고 **배포자 자신의 GitHub와 Cloudflare 계정**을 연결합니다. 생성할 저장소·Worker·D1 이름을 확인합니다.
-2. 빌드 명령은 `npm run build`, 배포 명령은 `npm run deploy`, Node는 **24 이상**으로 설정합니다. D1은 자동 생성·바인딩되며 DB ID를 수동으로 복사하지 않습니다. 배포 명령이 초기 마이그레이션도 수행합니다.
+2. 자동으로 채워지는 빌드 명령 `npm run build`, 배포 명령 `npm run deploy`를 확인합니다. Node 24는 저장소의 `.node-version`으로 지정합니다. D1은 자동 생성·바인딩되며 DB ID를 수동으로 복사하지 않습니다. 배포 명령이 초기 마이그레이션도 수행합니다.
 3. 배포된 Worker URL을 열면 **설정 wizard**가 나옵니다. 별도 CLI 설치는 필요 없습니다.
 4. wizard에 따라 Worker 전체를 Access로 보호하고, 실제 관리자 이메일만 허용합니다. 브라우저에서 암호화 키를 생성하고 복구 파일을 안전하게 보관합니다.
 5. wizard가 준비한 다섯 항목을 Worker **Settings → Variables and Secrets**에 **Secret**으로 넣고 Deploy합니다. Access 로그인 후 앱을 엽니다.
