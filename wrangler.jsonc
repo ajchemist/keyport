@@ -26,5 +26,6 @@
   "observability": {
     "enabled": false
   },
-  "preview_urls": false
+  "preview_urls": false,
+  "previews": {}
 }

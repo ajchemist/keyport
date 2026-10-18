@@ -9,7 +9,7 @@
     "check": "bunx --bun tsc --noEmit",
     "test": "bun test",
     "deploy": "bunx wrangler d1 migrations apply DB --remote && bunx wrangler deploy --keep-vars",
-    "preview": "bunx wrangler versions upload",
+    "preview": "bunx wrangler preview",
     "db:local": "bunx wrangler d1 migrations apply DB --local",
     "types": "bunx wrangler types --env-file .env.types.example --strict-vars=false --include-runtime=false",
     "build": "bunx --bun astro build"

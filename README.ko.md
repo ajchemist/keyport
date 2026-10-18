@@ -14,7 +14,7 @@
 4. wizard에 따라 Worker 전체를 Access로 보호하고, 실제 관리자 이메일만 허용합니다. 브라우저에서 암호화 키를 생성하고 복구 파일을 안전하게 보관합니다.
 5. wizard가 준비한 다섯 항목을 Worker **Settings → Variables and Secrets**에 **Secret**으로 넣고 Deploy합니다. Access 로그인 후 앱을 엽니다.
 
-비운영 배포 명령은 `bun run preview`입니다. 운영 배포 없이 Worker 버전만 업로드하며, 별도의 프리뷰 DB를 초기화하지 않습니다. 프리뷰 URL은 계속 비활성화합니다.
+Preview command는 `bunx wrangler preview`로 설정합니다(최신 코드에서는 `bun run preview`도 동일). Cloudflare 화면의 기본값 `npx wrangler preview`는 저장소 스크립트를 바꿔도 자동 변경되지 않습니다. Worker Previews는 `wrangler versions upload`와 다른 기능입니다. 빈 `previews` 설정은 설치 안내만 제공하며, 별도의 테스트 D1 바인딩·Secret·Access를 구성하기 전까지 관리 기능을 차단합니다. 프리뷰에 운영 자격 증명을 사용하지 마세요. [프리뷰 설정](https://developers.cloudflare.com/workers/previews/configuration/)
 
 자동화되는 범위는 저장소 복제·Workers Builds 연결·D1 생성·바인딩·마이그레이션·앱 배포입니다. **Access 정책과 Secret 저장은 사용자가 wizard를 따라 수행합니다.** Cloudflare 계정 관리 토큰을 앱에 맡기지 않습니다. 공식 배포 버튼이 제공하는 흐름이며, 실제 빈 Cloudflare 계정에서의 종단 검증은 아직 남아 있습니다. [배포 버튼 공식 안내](https://developers.cloudflare.com/workers/platform/deploy-buttons/)
 

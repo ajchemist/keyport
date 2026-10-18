@@ -14,7 +14,7 @@ A self-hosted Tailscale auth key desk on Cloudflare. Select an account and tailn
 4. Follow the wizard to protect the entire Worker with Access and allow only your actual administrator emails. Generate an encryption key in your browser and secure the recovery file.
 5. Save the five values prepared by the wizard as **Secrets** under Worker **Settings → Variables and Secrets**, then deploy. Sign in through Access to open the app.
 
-Set the non-production deploy command to `bun run preview`. It uploads a Worker version without deploying it to production; it does not initialize a separate preview database. Preview URLs remain disabled.
+Set the Preview command to `bunx wrangler preview` (or `bun run preview` with the latest source). Cloudflare may still display its own default, `npx wrangler preview`; repository scripts do not overwrite that dashboard field. Worker Previews are separate from `wrangler versions upload`. The empty `previews` block exposes setup instructions only: management remains blocked until separate test D1 bindings, Secrets, and Access are configured. Do not use production credentials for previews. [Preview configuration](https://developers.cloudflare.com/workers/previews/configuration/)
 
 The button automates repository cloning, Workers Builds integration, D1 provisioning and binding, migrations, and deployment. **You complete Access policies and Secret configuration in the wizard.** The app does not store a Cloudflare account management token. End-to-end installation in a fresh Cloudflare account remains unverified. [Official deployment guide](https://developers.cloudflare.com/workers/platform/deploy-buttons/)
 

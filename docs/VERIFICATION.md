@@ -7,7 +7,7 @@
 Bun 1.4.2로 도구·설치·CI·테스트를 전환했습니다. `bun.lock`을 사용하며 npm lockfile은 제거했습니다. Wrangler는 Bun 강제 실행 시 로컬 요청이 멈춰 `bunx wrangler`로 Node 24 런타임을 따릅니다. Astro·TypeScript·테스트는 Bun 런타임으로 실행합니다.
 
 - Astro 정적 빌드·UnoCSS 생성·TypeScript 검사·브라우저 ES 모듈 문법 검사.
-- GitHub Actions의 Ubuntu/Bun에서도 타입 생성 일치·타입 검사·12개 테스트·Astro 빌드·D1 마이그레이션/재실행·Worker 배포/비운영 버전 업로드 dry-run 통과.
+- GitHub Actions의 Ubuntu/Bun에서도 타입 생성 일치·타입 검사·12개 테스트·Astro 빌드·D1 마이그레이션/재실행·Worker 배포 dry-run 통과. Worker Previews 명령은 도움말 실행으로 확인하며 실제 배포는 미검증.
 - Worker 배포 dry-run: 정적 자산·Worker 묶음·DB/ASSETS 바인딩 확인. 실제 클라우드 배포는 수행하지 않음.
 - Wrangler/workerd의 로컬 D1에 초기 마이그레이션 적용 성공. 재실행 시 미적용 마이그레이션 없음.
 - `bun:test`·`bun:sqlite`로 Bun 테스트 12개 통과. 실제 SQLite 제약·쿼리와 합성 RSA 서명 JWT를 사용하고 JWKS/Tailscale 네트워크는 모의 처리.
@@ -39,6 +39,7 @@ Ego Chromium에서 확인했습니다. 실제 iOS Safari/Android Chrome 또는 �
 
 아래는 완료 표시하지 않았습니다. 배포자가 준비한 테스트 환경에서 수행해야 합니다. 비밀을 채팅·이슈·PR·스크린샷에 남기지 마세요.
 
+- [ ] 별도 테스트 DB·Secret·Access로 Worker Previews 배포 및 운영 데이터 분리 확인.
 - [ ] 빈 Cloudflare 계정에서 README 버튼 → 배포자 저장소 생성 → D1 자동 생성/바인딩 → 초기 마이그레이션 → 배포 → wizard 완료.
 - [ ] 실제 Access 허용·비허용 사용자, 로그아웃·세션 만료·재인증 후 복귀.
 - [ ] 실제 workers.dev/Custom Domain/라우트/프리뷰 우회 차단.
