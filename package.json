@@ -1,0 +1,38 @@
+{
+  "name": "keyport",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "npm run build && wrangler dev",
+    "check": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test test/*.test.ts",
+    "deploy": "wrangler d1 migrations apply DB --remote && wrangler deploy --keep-vars",
+    "db:local": "wrangler d1 migrations apply DB --local",
+    "types": "wrangler types --env-file .env.types.example --strict-vars=false --include-runtime=false",
+    "build": "astro build"
+  },
+  "cloudflare": {
+    "bindings": {
+      "DB": {
+        "description": "계정 프로필·암호화된 연결·90일 감사 기록"
+      }
+    }
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261018.1",
+    "@types/node": "^26.6.5",
+    "@unocss/astro": "^66.11.0",
+    "typescript": "^7.0.2",
+    "unocss": "^66.11.0",
+    "wrangler": "^4.151.1"
+  },
+  "dependencies": {
+    "astro": "^7.4.0",
+    "jose": "^6.2.12"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}
