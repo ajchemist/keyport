@@ -48,7 +48,7 @@ Tailscale 콘솔에서 해당 사용자로 새 **사용자 API 토큰**을 생�
 ```sh
 mkdir -p backups
 chmod 700 backups
-bunx --bun wrangler d1 export DB --remote --output backups/keyport.sql
+bunx wrangler d1 export DB --remote --output backups/keyport.sql
 chmod 600 backups/keyport.sql
 ```
 
@@ -66,7 +66,7 @@ chmod 700 .keyport
 bun -e 'import{randomBytes}from"node:crypto";import{writeFileSync}from"node:fs";writeFileSync(".keyport/new-key",randomBytes(32).toString("base64"),{mode:0o600,flag:"wx"})'
 ```
 
-4. 새 키를 암호화된 보관함에도 보관하고 `TOKEN_ENCRYPTION_KEY` Secret을 새 값으로 교체합니다. Secret 값은 로그·명령행 인자로 전달하지 않습니다. CLI라면 `bunx --bun wrangler secret put TOKEN_ENCRYPTION_KEY < .keyport/new-key`를 사용합니다.
+4. 새 키를 암호화된 보관함에도 보관하고 `TOKEN_ENCRYPTION_KEY` Secret을 새 값으로 교체합니다. Secret 값은 로그·명령행 인자로 전달하지 않습니다. CLI라면 `bunx wrangler secret put TOKEN_ENCRYPTION_KEY < .keyport/new-key`를 사용합니다.
 5. 앱의 ‘암호화 키 교체 · 운영 관리 → 저장된 토큰 재암호화’를 실행합니다. 새 키를 먼저 쓰고 기존 키로도 복호화를 허용하는 동안 전체를 새 키로 옮깁니다. 중단되면 두 키를 유지하고 다시 실행할 수 있습니다.
 6. 성공과 연결 검증을 확인한 뒤 `PREVIOUS_ENCRYPTION_KEY` Secret을 삭제합니다. 이전 백업 복구에 필요한 이전 키는 별도로 유지하고 임시 파일은 안전하게 제거합니다.
 

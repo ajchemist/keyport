@@ -53,7 +53,7 @@ Access의 Worker 전체 보호를 설정하고, 서버도 JWT의 서명·issuer�
 
 ## 로컬 개발
 
-Bun 1.4.2 이상:
+Bun 1.4.2 이상과 Wrangler용 Node 24 이상:
 
 ```sh
 bun install --frozen-lockfile
@@ -65,7 +65,7 @@ bun run db:local
 bun run dev
 ```
 
-테스트는 `bun:test`·`bun:sqlite`를 사용하고 Astro·TypeScript·Wrangler도 `bunx --bun`으로 실행합니다. 배포된 앱은 Cloudflare Workers에서 실행됩니다. Workers Builds는 Bun lockfile을 감지하며, Bun 버전을 명시하려면 빌드 변수에 `BUN_VERSION=1.4.2`를 설정합니다.
+테스트는 `bun:test`·`bun:sqlite`를 사용하고 Astro·TypeScript는 `bunx --bun`으로 실행합니다. Wrangler는 Bun 런타임을 강제하면 로컬 요청이 멈추는 문제가 있어 `bunx wrangler`로 공식 Node shebang을 따릅니다. Node 24는 Wrangler에만 필요하며 `.node-version`으로 지정합니다. [상위 프로젝트 호환성 이슈](https://github.com/cloudflare/workers-sdk/issues/15717)도 참고하세요. 배포된 앱은 Cloudflare Workers에서 실행됩니다. Workers Builds는 Bun lockfile을 감지하며, Bun 버전을 명시하려면 빌드 변수에 `BUN_VERSION=1.4.2`를 설정합니다.
 
 기본 로컬 실행은 미설정 상태로 wizard만 제공합니다. 운영에 인증 우회 개발 모드는 없습니다. 테스트는 합성 JWT·임시 SQLite·모의 Tailscale API로 검증합니다. 실제 사용자 토큰을 테스트 파일이나 채팅에 넣지 마세요.
 

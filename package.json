@@ -5,13 +5,13 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "dev": "bun run build && bunx --bun wrangler dev",
+    "dev": "bun run build && bunx wrangler dev",
     "check": "bunx --bun tsc --noEmit",
     "test": "bun test",
-    "deploy": "bunx --bun wrangler d1 migrations apply DB --remote && bunx --bun wrangler deploy --keep-vars",
-    "preview": "bunx --bun wrangler versions upload",
-    "db:local": "bunx --bun wrangler d1 migrations apply DB --local",
-    "types": "bunx --bun wrangler types --env-file .env.types.example --strict-vars=false --include-runtime=false",
+    "deploy": "bunx wrangler d1 migrations apply DB --remote && bunx wrangler deploy --keep-vars",
+    "preview": "bunx wrangler versions upload",
+    "db:local": "bunx wrangler d1 migrations apply DB --local",
+    "types": "bunx wrangler types --env-file .env.types.example --strict-vars=false --include-runtime=false",
     "build": "bunx --bun astro build"
   },
   "cloudflare": {
@@ -34,7 +34,8 @@
     "jose": "^6.2.12"
   },
   "engines": {
-    "bun": ">=1.4.2"
+    "bun": ">=1.4.2",
+    "node": ">=24"
   },
   "description": "A self-hosted Tailscale auth key desk on Cloudflare.",
   "homepage": "https://github.com/ajchemist/keyport",

@@ -55,7 +55,7 @@ Deleting a connection removes local credentials only. Existing auth keys and dev
 
 ## Local development
 
-Bun 1.4.2 or later:
+Bun 1.4.2 or later, plus Node 24 or later for Wrangler:
 
 ```sh
 bun install --frozen-lockfile
@@ -67,7 +67,7 @@ bun run db:local
 bun run dev
 ```
 
-Bun runs the test suite with `bun:test` and `bun:sqlite`, and runs Astro, TypeScript, and Wrangler with `bunx --bun`. Cloudflare still runs the deployed app on Workers. Workers Builds detects the Bun lockfile; if selecting a Bun version explicitly, set the build variable `BUN_VERSION=1.4.2`.
+Bun runs the test suite with `bun:test` and `bun:sqlite`, and runs Astro and TypeScript with `bunx --bun`. Wrangler uses `bunx wrangler`, which follows its Node shebang: forcing Wrangler onto Bun currently causes local requests to hang. Node 24 is retained solely for Wrangler; `.node-version` selects it in supported build environments. See the [upstream compatibility issue](https://github.com/cloudflare/workers-sdk/issues/15717). Cloudflare still runs the deployed app on Workers. Workers Builds detects the Bun lockfile; if selecting a Bun version explicitly, set the build variable `BUN_VERSION=1.4.2`.
 
 Local development starts unconfigured and exposes only the setup wizard. There is no production authentication bypass. Tests use synthetic JWTs, temporary SQLite, and a mocked Tailscale API. Never put real tokens in test files or chat.
 

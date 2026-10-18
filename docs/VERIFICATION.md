@@ -4,7 +4,7 @@
 
 ## 완료
 
-Bun 1.4.2로 도구·설치·CI·테스트를 전환했습니다. `bun.lock`을 사용하며 npm lockfile과 Node 버전 파일은 제거했습니다.
+Bun 1.4.2로 도구·설치·CI·테스트를 전환했습니다. `bun.lock`을 사용하며 npm lockfile은 제거했습니다. Wrangler는 Bun 강제 실행 시 로컬 요청이 멈춰 `bunx wrangler`로 Node 24 런타임을 따릅니다. Astro·TypeScript·테스트는 Bun 런타임으로 실행합니다.
 
 - Astro 정적 빌드·UnoCSS 생성·TypeScript 검사·브라우저 ES 모듈 문법 검사.
 - GitHub Actions의 Ubuntu/Bun에서도 타입 생성 일치·타입 검사·12개 테스트·Astro 빌드·D1 마이그레이션/재실행·Worker 배포/비운영 버전 업로드 dry-run 통과.
@@ -20,6 +20,8 @@ Bun 1.4.2로 도구·설치·CI·테스트를 전환했습니다. `bun.lock`을 
 - 병렬 발급 제한, 만료/권한/429/서버 오류/타임아웃/빈 응답 처리와 자동 재시도 없음.
 - no-store·외부 CORS 없음·보안 헤더, 90일 감사 정리·빈도 제한 정리.
 - 실제 로컬 Worker HTTP 응답: 초기 wizard 200, 관리 API와 앱 스크립트 503, no-store 헤더.
+
+Bun 1.4.2와 1.4.3에서 Wrangler 강제 Bun 실행의 로컬 요청 멈춤을 재현했습니다. `bunx wrangler` 경로의 실제 HTTP 응답도 검사하며 CI에 초기 화면 200·미설정 API 503 검사를 추가했습니다. [상위 이슈](https://github.com/cloudflare/workers-sdk/issues/15717)
 
 ## 브라우저 확인
 
