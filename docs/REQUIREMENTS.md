@@ -1,6 +1,6 @@
 # 합의된 범위
 
-2026-10-19 HANDOFF와 사용자 결정에 따른다. 공개 `ajchemist/keyport`, MIT 라이선스, GitHub 작업과 커밋 작성자는 ajchemist다. 기본 UI는 한국어, Astro + UnoCSS, 미니멀 스타일이다.
+2026-10-19 HANDOFF와 사용자 결정에 따른다. 공개 `ajchemist/keyport`, MIT 라이선스, GitHub 작업과 커밋 작성자는 ajchemist다. 기본 UI는 한국어, Astro + UnoCSS, 미니멀 스타일이다. 의존성 설치·도구 실행·테스트·CI는 Bun을 사용하고 `bun.lock`으로 버전을 고정한다.
 
 목표는 여러 계정 프로필·여러 Tailnet 연결을 관리하는 독립 Cloudflare 배포 PWA다. 첫 검증 흐름은 배포 → Access 인증 → 연결 하나 등록 → 발급·복사이며, 다중 연결과 운영 절차까지 구현 범위에 포함한다.
 

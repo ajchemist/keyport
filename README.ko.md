@@ -9,14 +9,18 @@
 ## 브라우저에서 설치
 
 1. 위 버튼을 누르고 **배포자 자신의 GitHub와 Cloudflare 계정**을 연결합니다. 생성할 저장소·Worker·D1 이름을 확인합니다.
-2. 자동으로 채워지는 빌드 명령 `npm run build`, 배포 명령 `npm run deploy`를 확인합니다. Node 24는 저장소의 `.node-version`으로 지정합니다. D1은 자동 생성·바인딩되며 DB ID를 수동으로 복사하지 않습니다. 배포 명령이 초기 마이그레이션도 수행합니다.
+2. 빌드 명령을 `bun run build`, 배포 명령을 `bun run deploy`로 설정합니다. 의존성은 `bun.lock`으로 고정하고 `packageManager`에 Bun 1.4.2를 지정합니다. D1은 자동 생성·바인딩되며 DB ID를 수동으로 복사하지 않습니다. 배포 명령이 초기 마이그레이션도 수행합니다.
 3. 배포된 Worker URL을 열면 **설정 wizard**가 나옵니다. 별도 CLI 설치는 필요 없습니다.
 4. wizard에 따라 Worker 전체를 Access로 보호하고, 실제 관리자 이메일만 허용합니다. 브라우저에서 암호화 키를 생성하고 복구 파일을 안전하게 보관합니다.
 5. wizard가 준비한 다섯 항목을 Worker **Settings → Variables and Secrets**에 **Secret**으로 넣고 Deploy합니다. Access 로그인 후 앱을 엽니다.
 
+비운영 배포 명령은 `bun run preview`입니다. 운영 배포 없이 Worker 버전만 업로드하며, 별도의 프리뷰 DB를 초기화하지 않습니다. 프리뷰 URL은 계속 비활성화합니다.
+
 자동화되는 범위는 저장소 복제·Workers Builds 연결·D1 생성·바인딩·마이그레이션·앱 배포입니다. **Access 정책과 Secret 저장은 사용자가 wizard를 따라 수행합니다.** Cloudflare 계정 관리 토큰을 앱에 맡기지 않습니다. 공식 배포 버튼이 제공하는 흐름이며, 실제 빈 Cloudflare 계정에서의 종단 검증은 아직 남아 있습니다. [배포 버튼 공식 안내](https://developers.cloudflare.com/workers/platform/deploy-buttons/)
 
 설치 안내만 인증 전 공개됩니다. 계정 등록·토큰 조회·발급 API와 앱 화면은 설정이 끝나기 전 차단됩니다. 설정 완료 후 wizard도 인증이 필요합니다. 첫 방문자를 관리자로 등록하지 않습니다.
+
+Bun 전환 전에 설치를 시작했다면 위 명령을 새로 지정하고 복제 저장소에도 최신 코드가 반영되었는지 확인하세요. 기존 복제 저장소에는 원본의 변경이 자동 반영되지 않습니다.
 
 공식 버튼 설치에는 GitHub/GitLab 계정 연결이 필요합니다. 기존 저장소를 미리 만들 필요는 없으며, 버튼이 내 계정에 복제 저장소를 만들고 Workers Builds에 연결합니다. Git 연결 없는 수동 배포는 Wrangler로 별도 수행할 수 있습니다.
 
@@ -49,17 +53,19 @@ Access의 Worker 전체 보호를 설정하고, 서버도 JWT의 서명·issuer�
 
 ## 로컬 개발
 
-Node 24 이상:
+Bun 1.4.2 이상:
 
 ```sh
-npm ci
-npm run types
-npm run check
-npm test
-npm run build
-npm run db:local
-npm run dev
+bun install --frozen-lockfile
+bun run types
+bun run check
+bun test
+bun run build
+bun run db:local
+bun run dev
 ```
+
+테스트는 `bun:test`·`bun:sqlite`를 사용하고 Astro·TypeScript·Wrangler도 `bunx --bun`으로 실행합니다. 배포된 앱은 Cloudflare Workers에서 실행됩니다. Workers Builds는 Bun lockfile을 감지하며, Bun 버전을 명시하려면 빌드 변수에 `BUN_VERSION=1.4.2`를 설정합니다.
 
 기본 로컬 실행은 미설정 상태로 wizard만 제공합니다. 운영에 인증 우회 개발 모드는 없습니다. 테스트는 합성 JWT·임시 SQLite·모의 Tailscale API로 검증합니다. 실제 사용자 토큰을 테스트 파일이나 채팅에 넣지 마세요.
 

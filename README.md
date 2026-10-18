@@ -9,12 +9,16 @@ A self-hosted Tailscale auth key desk on Cloudflare. Select an account and tailn
 ## Install in your browser
 
 1. Click the button and connect **your own GitHub and Cloudflare accounts**. Review the names of the repository, Worker, and D1 database being created.
-2. Keep the detected build command `npm run build` and deploy command `npm run deploy`. The repository's `.node-version` selects Node 24. D1 is provisioned and bound automatically; you do not need to copy database IDs. The deploy command also applies migrations.
+2. Set the build command to `bun run build` and the deploy command to `bun run deploy`. The repository uses `bun.lock` and declares Bun 1.4.2 in `packageManager`. D1 is provisioned and bound automatically; you do not need to copy database IDs. The deploy command also applies migrations.
 3. Open the deployed Worker URL to launch the **setup wizard**. No local CLI is needed.
 4. Follow the wizard to protect the entire Worker with Access and allow only your actual administrator emails. Generate an encryption key in your browser and secure the recovery file.
 5. Save the five values prepared by the wizard as **Secrets** under Worker **Settings → Variables and Secrets**, then deploy. Sign in through Access to open the app.
 
+Set the non-production deploy command to `bun run preview`. It uploads a Worker version without deploying it to production; it does not initialize a separate preview database. Preview URLs remain disabled.
+
 The button automates repository cloning, Workers Builds integration, D1 provisioning and binding, migrations, and deployment. **You complete Access policies and Secret configuration in the wizard.** The app does not store a Cloudflare account management token. End-to-end installation in a fresh Cloudflare account remains unverified. [Official deployment guide](https://developers.cloudflare.com/workers/platform/deploy-buttons/)
+
+If you started setup before switching to Bun, refresh the commands above and ensure your cloned repository contains the latest source. Existing clones do not automatically receive upstream changes.
 
 **Does the button require Git?** Yes. The official flow connects your GitHub/GitLab account, creates a copy of the source repository in your account, and connects it to Workers Builds. You do not need to create a repository beforehand. Manual deployment with Wrangler is a separate option that does not require a Git integration.
 
@@ -51,17 +55,19 @@ Deleting a connection removes local credentials only. Existing auth keys and dev
 
 ## Local development
 
-Node 24 or later:
+Bun 1.4.2 or later:
 
 ```sh
-npm ci
-npm run types
-npm run check
-npm test
-npm run build
-npm run db:local
-npm run dev
+bun install --frozen-lockfile
+bun run types
+bun run check
+bun test
+bun run build
+bun run db:local
+bun run dev
 ```
+
+Bun runs the test suite with `bun:test` and `bun:sqlite`, and runs Astro, TypeScript, and Wrangler with `bunx --bun`. Cloudflare still runs the deployed app on Workers. Workers Builds detects the Bun lockfile; if selecting a Bun version explicitly, set the build variable `BUN_VERSION=1.4.2`.
 
 Local development starts unconfigured and exposes only the setup wizard. There is no production authentication bypass. Tests use synthetic JWTs, temporary SQLite, and a mocked Tailscale API. Never put real tokens in test files or chat.
 

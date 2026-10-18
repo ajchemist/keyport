@@ -8,7 +8,7 @@
     ],
     "types": [
       "./worker-configuration.d.ts",
-      "node",
+      "bun",
       "@cloudflare/workers-types"
     ],
     "strict": true,

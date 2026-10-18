@@ -140,7 +140,7 @@ async function api(request: Request, env: Env, actor: string): Promise<Response>
   }
 }
 export default {
-  async fetch(request, env) {
+  async fetch(request: Request, env: Env) {
     try {
       const pathBeforeAuth = new URL(request.url).pathname;
       const setupAssets = new Set(['/setup.js', '/icon.svg']);
@@ -148,14 +148,14 @@ export default {
         && (['/', '/setup', '/setup.html'].includes(pathBeforeAuth) || setupAssets.has(pathBeforeAuth) || /^\/_astro\/[A-Za-z0-9_.-]+\.css$/.test(pathBeforeAuth))) {
         const url = new URL(request.url);
         if (!setupAssets.has(pathBeforeAuth) && !pathBeforeAuth.startsWith('/_astro/')) url.pathname = '/setup.html';
-        return protect(await env.ASSETS.fetch(new Request(url, { method: request.method })));
+        return protect(await env.ASSETS.fetch(new Request(url.toString(), { method: request.method })));
       }
       const actor = await authenticate(request, env);
       const path = new URL(request.url).pathname;
       const assetUrl = new URL(request.url);
       if (path === '/setup') assetUrl.pathname = '/setup.html';
       const response = path.startsWith('/api/') ? await api(request, env, actor)
-        : ['GET', 'HEAD'].includes(request.method) ? await env.ASSETS.fetch(new Request(assetUrl, request))
+        : ['GET', 'HEAD'].includes(request.method) ? await env.ASSETS.fetch(new Request(assetUrl.toString(), request))
         : json({ error: 'method_not_allowed', message: '지원하지 않는 요청 방식입니다.' }, 405);
       return protect(response);
     } catch (error) {

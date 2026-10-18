@@ -4,11 +4,13 @@
 
 ## 완료
 
+Bun 1.4.2로 도구·설치·CI·테스트를 전환했습니다. `bun.lock`을 사용하며 npm lockfile과 Node 버전 파일은 제거했습니다.
+
 - Astro 정적 빌드·UnoCSS 생성·TypeScript 검사·브라우저 ES 모듈 문법 검사.
-- GitHub Actions의 Ubuntu/Node 24에서도 타입 생성 일치·타입 검사·12개 테스트·Astro 빌드·D1 마이그레이션/재실행·Worker dry-run 통과.
+- GitHub Actions의 Ubuntu/Bun에서도 타입 생성 일치·타입 검사·12개 테스트·Astro 빌드·D1 마이그레이션/재실행·Worker 배포/비운영 버전 업로드 dry-run 통과.
 - Worker 배포 dry-run: 정적 자산·Worker 묶음·DB/ASSETS 바인딩 확인. 실제 클라우드 배포는 수행하지 않음.
 - Wrangler/workerd의 로컬 D1에 초기 마이그레이션 적용 성공. 재실행 시 미적용 마이그레이션 없음.
-- Node 테스트 12개 통과. 실제 SQLite 제약·쿼리와 합성 RSA 서명 JWT를 사용하고 JWKS/Tailscale 네트워크는 모의 처리.
+- `bun:test`·`bun:sqlite`로 Bun 테스트 12개 통과. 실제 SQLite 제약·쿼리와 합성 RSA 서명 JWT를 사용하고 JWKS/Tailscale 네트워크는 모의 처리.
 - 초기 미설정·위조 JWT/신원 헤더·만료·다른 issuer/AUD·비허용 관리자·대체 도메인 차단과 upstream 호출 없음.
 - 다른 Origin·GET 발급·임의 Tailnet URL 거부.
 - 두 프로필·두 Tailnet, 같은 Tailnet의 다른 사용자 토큰 분리, 발급 시 클라이언트 제공 토큰/조건 무시.

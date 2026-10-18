@@ -1,7 +1,6 @@
-import { test, before, beforeEach, after } from 'node:test';
+import { test, beforeAll, beforeEach, afterAll } from 'bun:test';
 import assert from 'node:assert/strict';
-import { DatabaseSync } from 'node:sqlite';
-import { readFileSync } from 'node:fs';
+import { Database } from 'bun:sqlite';
 import { generateKeyPair, exportJWK, SignJWT } from 'jose';
 import worker from '../src/index.ts';
 import { encrypt, decrypt } from '../src/security.ts';
@@ -12,7 +11,7 @@ const aud = 'a'.repeat(64);
 const issuer = 'https://keyport-test.cloudflareaccess.com';
 const secret = btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(32))));
 const nativeFetch = globalThis.fetch;
-let sqlite: DatabaseSync, env: Env, jwt: string, stranger: string, expired: string, wrongAud: string, wrongIssuer: string;
+let sqlite: Database, env: Env, jwt: string, stranger: string, expired: string, wrongAud: string, wrongIssuer: string;
 let upstream: { url: string; authorization: string; body?: unknown }[] = [];
 let upstreamStatus = 200, upstreamMode = 'normal';
 const pair = await generateKeyPair('RS256');
@@ -47,13 +46,13 @@ async function addConnection(profileId: string, tailnet = 'example.com', tokenVa
   resetRate(); const response = await request('/api/connections', 'POST', { name: '내 네트워크', profile_id: profileId, tailnet, token: tokenValue, token_expires_on: '2026-12-01' });
   assert.equal(response.status, 201, await response.clone().text()); return (await response.json() as { id: string }).id;
 }
-before(async () => {
+beforeAll(async () => {
   jwt = await token(); stranger = await token('stranger@example.com'); expired = await token('admin@example.com', aud, issuer, '-5m'); wrongAud = await token('admin@example.com', 'other'); wrongIssuer = await token('admin@example.com', aud, 'https://other.cloudflareaccess.com');
-  globalThis.fetch = (async (input: string | URL | Request, init?: RequestInit) => {
+  globalThis.fetch = (async (input, init) => {
     const url = String(input);
     if (url === `${issuer}/cdn-cgi/access/certs`) return Response.json({ keys: [publicJwk] });
     assert.match(url, /^https:\/\/api\.tailscale\.com\/api\/v2\/tailnet\//);
-    upstream.push({ url, authorization: new Headers(init?.headers).get('Authorization') ?? '', ...(init?.body ? { body: JSON.parse(String(init.body)) } : {}) });
+    upstream.push({ url, authorization: new Request(url, init).headers.get('Authorization') ?? '', ...(init?.body ? { body: JSON.parse(String(init.body)) } : {}) });
     if (upstreamMode === 'timeout') throw new DOMException('timeout', 'TimeoutError');
     if (upstreamStatus !== 200) return Response.json({ message: 'SENSITIVE UPSTREAM CONTENT' }, { status: upstreamStatus });
     if (upstreamMode === 'empty') return Response.json({});
@@ -61,12 +60,12 @@ before(async () => {
     return Response.json({ keys: [] });
   }) as typeof fetch;
 });
-beforeEach(() => {
-  sqlite?.close(); sqlite = new DatabaseSync(':memory:'); sqlite.exec('PRAGMA foreign_keys = ON'); sqlite.exec(readFileSync('migrations/0001_initial.sql', 'utf8'));
+beforeEach(async () => {
+  sqlite?.close(); sqlite = new Database(':memory:'); sqlite.exec('PRAGMA foreign_keys = ON'); sqlite.exec(await Bun.file('migrations/0001_initial.sql').text());
   env = { DB: database(), ASSETS: { fetch: async () => new Response('static asset') }, APP_ORIGIN: origin, ACCESS_TEAM_DOMAIN: 'keyport-test.cloudflareaccess.com', ACCESS_AUD: aud, ADMIN_EMAILS: 'admin@example.com', TOKEN_ENCRYPTION_KEY: secret, PREVIOUS_ENCRYPTION_KEY: '' } as unknown as Env;
   upstream = []; upstreamMode = 'normal'; upstreamStatus = 200;
 });
-after(() => { globalThis.fetch = nativeFetch; sqlite.close(); });
+afterAll(() => { globalThis.fetch = nativeFetch; sqlite.close(); });
 
 test('초기 설정 전에는 안내 자산만 공개하고 API·앱 자산·발급을 차단한다', async () => {
   env.TOKEN_ENCRYPTION_KEY = '';
@@ -163,5 +162,5 @@ test('90일이 지난 감사 기록과 만료한 제한만 정리한다', async 
   sqlite.prepare('INSERT INTO audit VALUES (?,?,?,?,NULL,NULL,?)').run('new', 'admin', 'gone', new Date().toISOString(), 'success');
   sqlite.exec("INSERT INTO rate_limits VALUES ('old',0),('future',9999999999)");
   await worker.scheduled({} as ScheduledController, env);
-  assert.equal(sqlite.prepare('SELECT count(*) n FROM audit').get()!.n, 1); assert.equal(sqlite.prepare('SELECT count(*) n FROM rate_limits').get()!.n, 1);
+  assert.equal(sqlite.prepare<{n: number}, []>('SELECT count(*) n FROM audit').get()!.n, 1); assert.equal(sqlite.prepare<{n: number}, []>('SELECT count(*) n FROM rate_limits').get()!.n, 1);
 });
