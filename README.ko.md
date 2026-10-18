@@ -27,7 +27,8 @@
 
 **이 `keyport` API 토큰은 Cloudflare Builds 배포용이며 Tailscale 토큰이 아닙니다.** Cloudflare가 생성·관리하도록 두고 Git·앱·D1·Worker Secret에 복사하지 마세요. 배포 스크립트가 D1 마이그레이션을 실행하므로 대상 계정의 **Account → D1 → Edit** 권한을 확인합니다. 공식 문서의 일반적인 자동 생성 토큰 권한 목록에는 D1이 없으므로 새 토큰에 포함되었다고 가정하지 않습니다. 마이그레이션에서 인증 오류가 나면 **My Profile → API Tokens**의 생성된 `keyport` 토큰에 대상 계정의 D1 편집 권한을 추가하고 빌드를 재시도하세요. Global API Key로 대체하지 않습니다. [빌드 토큰 공식 문서](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/)
 
-배포가 성공하면:
+배포가 성공하면 wizard는 **접근 설정 → 복구 키 → Secret 저장**의 세 단계만 보여줍니다. Access 누락·정책 수정과 빌드 설정 복구 안내는 필요한 때 펼쳐 볼 수 있습니다.
+
 
 1. Worker URL을 열고 Access 로그인 후 **설정 wizard**로 들어갑니다. 별도 CLI 설치는 필요 없습니다.
 2. Worker 전체 Access 보호와 기존 Access 앱의 실제 관리자 이메일 허용 정책을 확인합니다. 앱을 중복 생성하지 말고 기존 AUD 태그를 사용합니다.

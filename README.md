@@ -29,6 +29,8 @@ Cloudflare controls these dashboard fields. Repository scripts do not overwrite 
 
 Once deployment succeeds:
 
+The wizard shows three steps: **Access settings → Recovery key → Save Secrets**. Expand the help sections when you need to repair Access policies or build settings.
+
 1. Open the Worker URL and sign in through Access to launch the **setup wizard**. No local CLI is needed.
 2. Confirm Worker-wide Access protection and restrict the existing Access application to the actual administrator emails. Reuse its AUD tag instead of creating a duplicate application.
 3. Generate an encryption key in your browser and secure the recovery file.
