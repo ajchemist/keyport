@@ -36,6 +36,10 @@ Ego Chromium에서 확인했습니다. 실제 iOS Safari/Android Chrome 또는 �
 - 오프라인 에뮬레이션에서 안내·발급 거부. 복구 후 자동 발급 없음. 전체 시나리오 발급 호출 1회.
 - 자동화 도구의 탭 전환도 발급 결과를 지우므로 결과·복사 검증은 한 브라우저 실행 안에서 수행했습니다.
 
+## 업데이트 자동화
+
+`Update Keyport` 수동 Actions workflow와 기준 커밋 기반 3-way 병합을 추가했습니다. 별도 임시 Git 저장소 테스트 3개로 배포 설정 보존·원본 설정 병합·재실행·충돌/미커밋 변경 중단·이미 반영된 템플릿 처리를 검증했습니다. 전체 테스트는 15개입니다. 실제 배포 저장소에서 workflow 실행·PR 생성은 설치 PR 병합 후 별도 확인이 필요합니다.
+
 ## 사용자 제공 첫 배포 로그
 
 2026-10-19 KST에 제공된 Cloudflare Workers Builds 로그에서 `ajchemist/keyport` → `alchemiakr/keyport` 복제, Bun 설치·Astro 빌드, 원격 D1 초기 마이그레이션, Worker·자산 배포 성공을 확인했습니다. 배포 주소는 `https://keyport.alchemiakr.workers.dev`입니다. 이 로그만으로 Access 정책이나 실제 wizard 완료를 검증한 것은 아닙니다.
