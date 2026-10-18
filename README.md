@@ -8,10 +8,12 @@ A self-hosted Tailscale auth key desk on Cloudflare. Select an account and tailn
 
 ## Install in your browser
 
+**Before deploying, enable Protect with Cloudflare Access and select All traffic.** Protect production and previews from the start. Use the Cloudflare account policy only if all members of that account are trusted administrators; otherwise choose an appropriately restricted policy. Never use Everyone or Bypass. The repository cannot enforce the dashboard checkbox through a documented template setting.
+
 1. Click the button and connect **your own GitHub and Cloudflare accounts**. Review the names of the repository, Worker, and D1 database being created.
 2. Set the build command to `bun run build` and the deploy command to `bun run deploy`. The repository uses `bun.lock` and declares Bun 1.4.2 in `packageManager`. D1 is provisioned and bound automatically; you do not need to copy database IDs. The deploy command also applies migrations.
-3. Open the deployed Worker URL to launch the **setup wizard**. No local CLI is needed.
-4. Follow the wizard to protect the entire Worker with Access and allow only your actual administrator emails. Generate an encryption key in your browser and secure the recovery file.
+3. Open the deployed Worker URL, sign in through Access, and launch the **setup wizard**. No local CLI is needed.
+4. Confirm Worker-wide Access protection and restrict the existing Access application to your actual administrator emails. Reuse its AUD tag instead of creating a duplicate application. Generate an encryption key in your browser and secure the recovery file.
 5. Save the five values prepared by the wizard as **Secrets** under Worker **Settings → Variables and Secrets**, then deploy. Sign in through Access to open the app.
 
 Set the Preview command to `bunx wrangler preview` (or `bun run preview` with the latest source). Cloudflare may still display its own default, `npx wrangler preview`; repository scripts do not overwrite that dashboard field. Worker Previews are separate from `wrangler versions upload`. The empty `previews` block exposes setup instructions only: management remains blocked until separate test D1 bindings, Secrets, and Access are configured. Do not use production credentials for previews. [Preview configuration](https://developers.cloudflare.com/workers/previews/configuration/)
@@ -22,7 +24,7 @@ If you started setup before switching to Bun, refresh the commands above and ens
 
 **Does the button require Git?** Yes. The official flow connects your GitHub/GitLab account, creates a copy of the source repository in your account, and connects it to Workers Builds. You do not need to create a repository beforehand. Manual deployment with Wrangler is a separate option that does not require a Git integration.
 
-Only setup instructions are public before configuration. The management UI and APIs remain blocked until configuration is complete. Afterward, setup instructions also require authentication. The first visitor never becomes an administrator automatically.
+With Access enabled at deployment, even the setup wizard requires login. If Access is omitted, only setup instructions can be public before configuration. The management UI and APIs remain blocked until configuration is complete. Afterward, setup instructions also require authentication. The first visitor never becomes an administrator automatically.
 
 ## Use
 

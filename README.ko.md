@@ -8,17 +8,19 @@
 
 ## 브라우저에서 설치
 
+**Deploy를 누르기 전에 Protect with Cloudflare Access를 켜고 All traffic을 선택하세요.** 운영과 프리뷰를 처음부터 보호합니다. Cloudflare account 정책은 해당 계정의 모든 구성원을 관리자로 신뢰할 때만 사용하고, 그렇지 않으면 제한된 허용 정책을 선택하세요. Everyone·Bypass는 사용하지 않습니다. 저장소에서 이 체크박스를 강제하는 공식 템플릿 설정은 확인되지 않았습니다.
+
 1. 위 버튼을 누르고 **배포자 자신의 GitHub와 Cloudflare 계정**을 연결합니다. 생성할 저장소·Worker·D1 이름을 확인합니다.
 2. 빌드 명령을 `bun run build`, 배포 명령을 `bun run deploy`로 설정합니다. 의존성은 `bun.lock`으로 고정하고 `packageManager`에 Bun 1.4.2를 지정합니다. D1은 자동 생성·바인딩되며 DB ID를 수동으로 복사하지 않습니다. 배포 명령이 초기 마이그레이션도 수행합니다.
-3. 배포된 Worker URL을 열면 **설정 wizard**가 나옵니다. 별도 CLI 설치는 필요 없습니다.
-4. wizard에 따라 Worker 전체를 Access로 보호하고, 실제 관리자 이메일만 허용합니다. 브라우저에서 암호화 키를 생성하고 복구 파일을 안전하게 보관합니다.
+3. 배포된 Worker URL을 열고 Access에 로그인하면 **설정 wizard**가 나옵니다. 별도 CLI 설치는 필요 없습니다.
+4. Worker 전체의 Access 보호를 확인하고, 기존 Access 앱의 허용 대상을 실제 관리자 이메일로 제한합니다. 앱을 중복 생성하지 말고 기존 앱의 AUD 태그를 사용합니다. 브라우저에서 암호화 키를 생성하고 복구 파일을 안전하게 보관합니다.
 5. wizard가 준비한 다섯 항목을 Worker **Settings → Variables and Secrets**에 **Secret**으로 넣고 Deploy합니다. Access 로그인 후 앱을 엽니다.
 
 Preview command는 `bunx wrangler preview`로 설정합니다(최신 코드에서는 `bun run preview`도 동일). Cloudflare 화면의 기본값 `npx wrangler preview`는 저장소 스크립트를 바꿔도 자동 변경되지 않습니다. Worker Previews는 `wrangler versions upload`와 다른 기능입니다. 빈 `previews` 설정은 설치 안내만 제공하며, 별도의 테스트 D1 바인딩·Secret·Access를 구성하기 전까지 관리 기능을 차단합니다. 프리뷰에 운영 자격 증명을 사용하지 마세요. [프리뷰 설정](https://developers.cloudflare.com/workers/previews/configuration/)
 
 자동화되는 범위는 저장소 복제·Workers Builds 연결·D1 생성·바인딩·마이그레이션·앱 배포입니다. **Access 정책과 Secret 저장은 사용자가 wizard를 따라 수행합니다.** Cloudflare 계정 관리 토큰을 앱에 맡기지 않습니다. 공식 배포 버튼이 제공하는 흐름이며, 실제 빈 Cloudflare 계정에서의 종단 검증은 아직 남아 있습니다. [배포 버튼 공식 안내](https://developers.cloudflare.com/workers/platform/deploy-buttons/)
 
-설치 안내만 인증 전 공개됩니다. 계정 등록·토큰 조회·발급 API와 앱 화면은 설정이 끝나기 전 차단됩니다. 설정 완료 후 wizard도 인증이 필요합니다. 첫 방문자를 관리자로 등록하지 않습니다.
+배포 시 Access를 켜면 설치 wizard부터 로그인이 필요합니다. Access를 빠뜨린 경우에도 인증 전에는 설치 안내만 공개됩니다. 계정 등록·토큰 조회·발급 API와 앱 화면은 설정이 끝나기 전 차단됩니다. 설정 완료 후 wizard도 인증이 필요합니다. 첫 방문자를 관리자로 등록하지 않습니다.
 
 Bun 전환 전에 설치를 시작했다면 위 명령을 새로 지정하고 복제 저장소에도 최신 코드가 반영되었는지 확인하세요. 기존 복제 저장소에는 원본의 변경이 자동 반영되지 않습니다.
 

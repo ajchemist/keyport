@@ -2,7 +2,7 @@
 
 ## 설치 설정
 
-기본 설치는 README의 Deploy to Cloudflare 버튼과 배포된 `/setup` wizard로 수행합니다. 설치 화면에 Tailscale 토큰을 입력하지 마세요. 필요한 설정은 모두 Worker **Secret**으로 저장합니다.
+기본 설치는 README의 Deploy to Cloudflare 버튼과 배포된 `/setup` wizard로 수행합니다. **배포 화면에서 Protect with Cloudflare Access → All traffic을 켠 뒤 Deploy합니다.** 이미 생성된 Access 앱을 재사용하고 실제 관리자 허용 정책과 AUD를 확인합니다. Cloudflare account 정책은 계정 구성원 전체를 신뢰할 때만 사용합니다. 설치 화면에 Tailscale 토큰을 입력하지 마세요. 필요한 설정은 모두 Worker **Secret**으로 저장합니다.
 
 | 이름 | 값 |
 | --- | --- |
