@@ -5,6 +5,7 @@
 ## 완료
 
 - Astro 정적 빌드·UnoCSS 생성·TypeScript 검사·브라우저 ES 모듈 문법 검사.
+- GitHub Actions의 Ubuntu/Node 24에서도 타입 생성 일치·타입 검사·12개 테스트·Astro 빌드·D1 마이그레이션/재실행·Worker dry-run 통과.
 - Worker 배포 dry-run: 정적 자산·Worker 묶음·DB/ASSETS 바인딩 확인. 실제 클라우드 배포는 수행하지 않음.
 - Wrangler/workerd의 로컬 D1에 초기 마이그레이션 적용 성공. 재실행 시 미적용 마이그레이션 없음.
 - Node 테스트 12개 통과. 실제 SQLite 제약·쿼리와 합성 RSA 서명 JWT를 사용하고 JWKS/Tailscale 네트워크는 모의 처리.
@@ -26,6 +27,7 @@ Ego Chromium에서 확인했습니다. 실제 iOS Safari/Android Chrome 또는 �
 - wizard 새로고침 후 키 복원 없음. localStorage/sessionStorage 항목 0개.
 - 별도 로컬 합성 API fixture에서 관리 화면: 프로필 추가 → 네트워크 등록 → 자동 선택, 제출 후 토큰 입력 지움, 예상 소유자 미검증 표시.
 - 같은 fixture에서 발급 결과의 연결 표시·복사·복사 후 유지·지우기·새로고침 후 키 없음.
+- 관리 화면도 390px viewport에서 가로 넘침 없음과 PWA manifest 연결 확인.
 - 오프라인 에뮬레이션에서 안내·발급 거부. 복구 후 자동 발급 없음. 전체 시나리오 발급 호출 1회.
 - 자동화 도구의 탭 전환도 발급 결과를 지우므로 결과·복사 검증은 한 브라우저 실행 안에서 수행했습니다.
 
